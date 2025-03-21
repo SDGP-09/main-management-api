@@ -2,6 +2,7 @@ package com.civilink.main_management_api.dto;
 
 
 public class TaskRequest {
+    private String Id;
     private String name;
     private String startDate;
     private String endDate;
@@ -9,7 +10,17 @@ public class TaskRequest {
     private String dependencies;
     private String description;
 
-    // Getters and setters
+
+
+
+    public String getId() {
+        return Id;
+    }
+
+    public void setId(String id) {
+        Id = id;
+    }
+
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
