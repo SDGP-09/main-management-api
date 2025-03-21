@@ -10,11 +10,11 @@ public class TaskResponse {
     private String dependencies;
     private String description;
 
-    // Default constructor
+
     public TaskResponse() {
     }
 
-    // Constructor to create from Task entity
+
     public TaskResponse(Task task) {
         this.id = task.getId();
         this.name = task.getName();
