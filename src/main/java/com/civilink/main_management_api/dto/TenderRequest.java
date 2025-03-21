@@ -2,6 +2,7 @@ package com.civilink.main_management_api.dto;
 
 
 public class TenderRequest {
+    private String id;
     private String name;
     private String openDate;
     private String closeDate;
@@ -10,6 +11,9 @@ public class TenderRequest {
 
 
     // Getters and setters
+    public String getId(){ return id; }
+    public void setId(String id){ this.id = id; }
+
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 

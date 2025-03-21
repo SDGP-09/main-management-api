@@ -18,6 +18,16 @@ public class TenderController {
         System.out.println("Adding task: " + tenderRequest.getName()+": "+""+tenderRequest.getOpenDate()+"" +tenderRequest.getCloseDate()+""+tenderRequest.getProgress()+""+tenderRequest.getDependencies());
     }
 
+    @DeleteMapping("/delete-tender")
+    public String deleteTender(@RequestBody TenderRequest tenderRequest) {
+        String idToDelete = tenderRequest.getId();
+        System.out.println("Deleting tender with ID: " + idToDelete);
+        return "Tender with ID " + idToDelete + " deleted successfully.";
+    }
+
+
+
+
     @GetMapping
     public List<Tender> getTenders(){
         List<Tender> tenders = new ArrayList<>();
