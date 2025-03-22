@@ -1,37 +1,93 @@
 package com.civilink.main_management_api.controller;
 
+
+
 import com.civilink.main_management_api.dto.TenderRequest;
-import com.civilink.main_management_api.util.Tender;
+import com.civilink.main_management_api.dto.TenderResponse;
+import com.civilink.main_management_api.entity.Tender;
+import com.civilink.main_management_api.service.TenderService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/tender")
-@CrossOrigin ("*")
+@RequestMapping("/api/tenders")
+@CrossOrigin("*")
 public class TenderController {
+    @Autowired
+    private TenderService tenderService;
 
-    @PostMapping("/add-tender")
-    public void addTender(@RequestBody TenderRequest tenderRequest) {
-        System.out.println("Adding task: " + tenderRequest.getName()+": "+""+tenderRequest.getOpenDate()+"" +tenderRequest.getCloseDate()+""+tenderRequest.getProgress()+""+tenderRequest.getDependencies());
+    // Create empty task (for new task form)
+    @PostMapping("/create-empty")
+    public ResponseEntity<TenderResponse> createEmptyTask() {
+        Tender newTender = tenderService.createEmptyTask();
+        return ResponseEntity.ok(new TenderResponse(newTender));
     }
 
-    @DeleteMapping("/delete-tender")
-    public String deleteTender(@RequestBody TenderRequest tenderRequest) {
-        String idToDelete = tenderRequest.getId();
-        System.out.println("Deleting tender with ID: " + idToDelete);
-        return "Tender with ID " + idToDelete + " deleted successfully.";
-    }
-
-
-
-
+    // Get all tasks for Gantt chart
     @GetMapping
-    public List<Tender> getTenders(){
-        List<Tender> tenders = new ArrayList<>();
-        tenders.add(new Tender("1234" , "amal","2025-03-20","2025-03-25", "20",""));
-        tenders.add(new Tender("1211" , "aaaa","2025-03-20","2025-03-26", "20","1234"));
-        return tenders;
+    public ResponseEntity<List<TenderResponse>> getAllTenders() {
+        List<Tender> tenders = tenderService.getAllTenders();
+        List<TenderResponse> responses = tenders.stream()
+                .map(TenderResponse::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(responses);
     }
+
+    // Get task details by ID
+    @GetMapping("/{id}")
+    public ResponseEntity<TenderResponse> getTenderById(@PathVariable String id) {
+        Optional<Tender> tender = tenderService.getTenderById(id);
+        return tender.map(t -> ResponseEntity.ok(new TenderResponse(t)))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    // Save or update task
+    @PostMapping("/save")
+    public ResponseEntity<TenderResponse> saveTender(@RequestBody TenderRequest tenderRequest) {
+        Tender tender = convertToEntity(tenderRequest);
+        Tender savedTender = tenderService.addTender(tender);
+        return ResponseEntity.ok(new TenderResponse(savedTender));
+    }
+
+    // Update task
+    @PutMapping("/{id}")
+    public ResponseEntity<TenderResponse> updateTender(@PathVariable String id, @RequestBody TenderRequest tenderRequest) {
+        Tender tender = convertToEntity(tenderRequest);
+        Tender updatedTender = tenderService.updateTender(id, tender);
+
+        if (updatedTender != null) {
+            return ResponseEntity.ok(new TenderResponse(updatedTender));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // Delete task
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTender(@PathVariable String id) {
+        boolean deleted = tenderService.deleteTender(id);
+        if (deleted) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // Helper method to convert DTO to entity
+    private Tender convertToEntity(TenderRequest tenderRequest) {
+        return new Tender(
+                tenderRequest.getId(),
+                tenderRequest.getName(),
+                tenderRequest.getOpenDate(),
+                tenderRequest.getCloseDate(),
+                tenderRequest.getProgress(),
+                tenderRequest.getDependencies()
+        );
+    }
+
 }
