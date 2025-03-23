@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/tasks")
-@CrossOrigin("*")
 public class TaskController {
     @Autowired
     private TaskService taskService;
