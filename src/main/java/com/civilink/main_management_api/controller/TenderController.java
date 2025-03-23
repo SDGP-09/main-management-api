@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/tenders")
-@CrossOrigin("*")
 public class TenderController {
     @Autowired
     private TenderService tenderService;
