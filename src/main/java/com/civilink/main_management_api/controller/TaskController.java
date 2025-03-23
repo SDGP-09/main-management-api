@@ -28,7 +28,7 @@ public class TaskController {
     }
 
     // Get all tasks for Gantt chart
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<TaskResponse>> getAllTasks() {
         List<Task> tasks = taskService.getAllTasks();
         List<TaskResponse> responses = tasks.stream()
