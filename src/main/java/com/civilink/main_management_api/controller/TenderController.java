@@ -21,14 +21,14 @@ public class TenderController {
     @Autowired
     private TenderService tenderService;
 
-    // Create empty task (for new task form)
+    // Create empty tender (for new tender form)
     @PostMapping("/create-empty")
-    public ResponseEntity<TenderResponse> createEmptyTask() {
-        Tender newTender = tenderService.createEmptyTask();
+    public ResponseEntity<TenderResponse> createEmptyTender() {
+        Tender newTender = tenderService.createEmptyTender();
         return ResponseEntity.ok(new TenderResponse(newTender));
     }
 
-    // Get all tasks for Gantt chart
+    // Get all tenders for Gantt chart
     @GetMapping
     public ResponseEntity<List<TenderResponse>> getAllTenders() {
         List<Tender> tenders = tenderService.getAllTenders();
@@ -38,7 +38,7 @@ public class TenderController {
         return ResponseEntity.ok(responses);
     }
 
-    // Get task details by ID
+    // Get tender details by ID
     @GetMapping("/{id}")
     public ResponseEntity<TenderResponse> getTenderById(@PathVariable String id) {
         Optional<Tender> tender = tenderService.getTenderById(id);
@@ -46,7 +46,7 @@ public class TenderController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // Save or update task
+    // Save or update tender
     @PostMapping("/save")
     public ResponseEntity<TenderResponse> saveTender(@RequestBody TenderRequest tenderRequest) {
         Tender tender = convertToEntity(tenderRequest);
@@ -54,7 +54,7 @@ public class TenderController {
         return ResponseEntity.ok(new TenderResponse(savedTender));
     }
 
-    // Update task
+    // Update tender
     @PutMapping("/{id}")
     public ResponseEntity<TenderResponse> updateTender(@PathVariable String id, @RequestBody TenderRequest tenderRequest) {
         Tender tender = convertToEntity(tenderRequest);
@@ -86,7 +86,8 @@ public class TenderController {
                 tenderRequest.getOpenDate(),
                 tenderRequest.getCloseDate(),
                 tenderRequest.getProgress(),
-                tenderRequest.getDependencies()
+                tenderRequest.getDependencies(),
+                tenderRequest.getDescription()
         );
     }
 

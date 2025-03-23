@@ -1,7 +1,6 @@
 package com.civilink.main_management_api.dto;
 
 
-import com.civilink.main_management_api.entity.Task;
 import com.civilink.main_management_api.entity.Tender;
 
 public class TenderResponse {
@@ -12,10 +11,10 @@ public class TenderResponse {
     private String closeDate;
     private String progress;
     private String dependencies;
+    private String description;
 
 
-
-    public TenderResponse(Task newTask) {
+    public TenderResponse() {
     }
 
 
@@ -26,6 +25,7 @@ public class TenderResponse {
         this.closeDate = tender.getCloseDate();
         this.progress = tender.getProgress();
         this.dependencies = tender.getDependencies();
+        this.description = tender.getDescription();
 
     }
 
@@ -50,7 +50,7 @@ public class TenderResponse {
         return openDate;
     }
 
-    public void setOpenDate(String startDate) {
+    public void setOpenDate(String openDate) {
         this.openDate = openDate;
     }
 
@@ -77,6 +77,10 @@ public class TenderResponse {
     public void setDependencies(String dependencies) {
         this.dependencies = dependencies;
     }
+
+    public String getDescription() {return description;}
+
+    public void setDescription(String description) {this.description = description;}
 
 
 

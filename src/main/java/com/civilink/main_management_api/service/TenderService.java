@@ -28,7 +28,7 @@ public class TenderService {
     }
 
     public Tender updateTender(String id, Tender updatedTender) {
-        // Check if task exists
+        // Check if tender exists
         Optional<Tender> existingTender = tenderRepository.findById(id);
         if (existingTender.isPresent()) {
             updatedTender.setId(id);
@@ -48,8 +48,8 @@ public class TenderService {
 
 
 
-    // Method to create an empty task with default values
-    public Tender createEmptyTask() {
+    // Method to create an empty tender with default values
+    public Tender createEmptyTender() {
         Tender tender = new Tender();
         return tenderRepository.save(tender);
     }

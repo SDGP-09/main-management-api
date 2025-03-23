@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TenderRepository extends JpaRepository<Tender, String> {
-    // Custom query methods can go here if needed
+
 }
